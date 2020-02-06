@@ -1,0 +1,9 @@
+[
+  {
+    "artifact": "frcJava (in project Tank Drive Example)",
+    "target": "roborio",
+    "debugfile": "frcJava_roborio.debugconfig",
+    "project": "Tank Drive Example",
+    "language": "java"
+  }
+]
