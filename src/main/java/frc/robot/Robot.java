@@ -16,11 +16,15 @@ public class Robot extends TimedRobot {
   Joystick _joystick = new Joystick(0);
   Joystick _joystick1 = new Joystick(1);
   Gyro gyro = new ADXRS450_Gyro();
-  //Spark shooter = new Spark(0);
+  // Spark shooter = new Spark(0);
   Spark grabber = new Spark(1);
   Spark inserter = new Spark(0);
   Relay shooter = new Relay(0, Relay.Direction.kReverse);
-  //Servo servo = new Servo(0);
+  // Servo servo = new Servo(0);
+  long startTime = 0;
+
+  
+
 
   @Override
   public void teleopInit() {
@@ -35,7 +39,6 @@ public class Robot extends TimedRobot {
     _talonL2.setInverted(true); // <<<<<< Adjust this
     _talonR1.setInverted(true); // <<<<<< Adjust this
     _talonR2.setInverted(true); // <<<<<< Adjust this
-
 
     /*
      * WPI drivetrain classes defaultly assume left and right are opposite. call
@@ -56,15 +59,13 @@ public class Robot extends TimedRobot {
     boolean buttonPressed2 = _joystick1.getRawButton(11);
     boolean buttonPressed3 = _joystick1.getRawButtonPressed(1);
 
-    //double shooterSpeed = 0;
+    // double shooterSpeed = 0;
     double grabberSpeed = 0;
     double inserterSpeed = 0;
 
-
     if (buttonPressed1) {
       shooter.set(Relay.Value.kReverse);
-    }
-    else {
+    } else {
       shooter.set(Relay.Value.kOff);
     }
 
@@ -72,10 +73,10 @@ public class Robot extends TimedRobot {
       grabberSpeed = 1;
     }
 
-    if(buttonPressed3){
+    if (buttonPressed3) {
       inserterSpeed = -1;
     }
-    //shooter.setSpeed(shooterSpeed);
+    // shooter.setSpeed(shooterSpeed);
     grabber.setSpeed(grabberSpeed);
     inserter.setSpeed(inserterSpeed);
 
@@ -84,15 +85,37 @@ public class Robot extends TimedRobot {
       x /= 2;
       rotationRate /= 2;
     }
-    //servo.set(Math.abs(_joystick.getX()));
+    // servo.set(Math.abs(_joystick.getX()));
     // System.out.println(servo.get() + " " + servo.getAngle());
-    
-    //System.out.println(gyro.getAngle());
-    
+
+    // System.out.println(gyro.getAngle());
+
     _drive.arcadeDrive(x, -rotationRate);
   }
 
-    @Override
-    public void autonomousPeriodic() {
+  @Override
+  public void autonomousPeriodic() {
+    long currentTime = System.currentTimeMillis();
+    long elapsedTime = currentTime-startTime;
+    if (elapsedTime < 1000 ) {
+      _drive.arcadeDrive( 0.5, 0 );
     }
+    else { 
+      _drive.arcadeDrive( 0, 0);
+    }
+
+  }
+
+  @Override
+  public void autonomousInit() {
+    super.autonomousInit();
+
+    startTime = System.currentTimeMillis();
+
+
+  }
+
+
+
+
 }
