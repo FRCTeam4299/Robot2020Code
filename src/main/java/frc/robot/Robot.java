@@ -14,9 +14,11 @@ public class Robot extends TimedRobot {
   SpeedControllerGroup _right = new SpeedControllerGroup(_talonR1, _talonR2);
   DifferentialDrive _drive = new DifferentialDrive(_left, _right);
   Joystick _joystick = new Joystick(0);
+  Joystick _joystick1 = new Joystick(1);
   Gyro gyro = new ADXRS450_Gyro();
   //Spark shooter = new Spark(0);
   Spark grabber = new Spark(1);
+  Spark inserter = new Spark(0);
   Relay shooter = new Relay(0, Relay.Direction.kReverse);
   //Servo servo = new Servo(0);
 
@@ -50,11 +52,14 @@ public class Robot extends TimedRobot {
     double rotationRate = _joystick.getX();
     boolean triggerPressed = _joystick.getTrigger();
 
-    boolean buttonPressed1 = _joystick.getRawButton(2);
-    boolean buttonPressed2 = _joystick.getRawButton(3);
+    boolean buttonPressed1 = _joystick1.getRawButton(2);
+    boolean buttonPressed2 = _joystick1.getRawButton(11);
+    boolean buttonPressed3 = _joystick1.getRawButtonPressed(1);
 
     //double shooterSpeed = 0;
     double grabberSpeed = 0;
+    double inserterSpeed = 0;
+
 
     if (buttonPressed1) {
       shooter.set(Relay.Value.kReverse);
@@ -67,8 +72,12 @@ public class Robot extends TimedRobot {
       grabberSpeed = 1;
     }
 
+    if(buttonPressed3){
+      inserterSpeed = -1;
+    }
     //shooter.setSpeed(shooterSpeed);
     grabber.setSpeed(grabberSpeed);
+    inserter.setSpeed(inserterSpeed);
 
     // _drive.tankDrive(left,right);
     if (triggerPressed) {
