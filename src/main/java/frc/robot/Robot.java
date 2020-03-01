@@ -97,20 +97,32 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     long currentTime = System.currentTimeMillis();
     long elapsedTime = currentTime-startTime;
+    
     if (elapsedTime < 1000 ) {
       _drive.arcadeDrive( 0.5, 0 );
     }
     else { 
       _drive.arcadeDrive( 0, 0);
     }
+    if (elapsedTime > 1000 && elapsedTime < 3000) {
+      shooter.set(Relay.Value.kReverse);
+    }
+    if (elapsedTime > 3000 && elapsedTime< 7000) {
+      fireOneBall();
+    }
 
   }
+  public void fireOneBall() {
+    
 
+    
+  }
   @Override
   public void autonomousInit() {
     super.autonomousInit();
 
     startTime = System.currentTimeMillis();
+
 
 
   }
