@@ -22,9 +22,8 @@ public class Robot extends TimedRobot {
   Relay shooter = new Relay(0, Relay.Direction.kReverse);
   // Servo servo = new Servo(0);
   long startTime = 0;
-
-  
-
+  boolean isShooting = false;
+  long startTimeShootingPhase = 0;
 
   @Override
   public void teleopInit() {
@@ -56,7 +55,7 @@ public class Robot extends TimedRobot {
     boolean triggerPressed = _joystick.getTrigger();
 
     boolean buttonPressed1 = _joystick1.getRawButton(2);
-    boolean buttonPressed2 = _joystick1.getRawButton(11);
+    boolean buttonPressed2 = _joystick1.getRawButton(6);
     boolean buttonPressed3 = _joystick1.getRawButtonPressed(1);
 
     // double shooterSpeed = 0;
@@ -96,38 +95,49 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     long currentTime = System.currentTimeMillis();
-    long elapsedTime = currentTime-startTime;
-    
-    if (elapsedTime < 1000 ) {
-      _drive.arcadeDrive( 0.5, 0 );
+    long elapsedTime = currentTime - startTime;
+
+    if (elapsedTime < 1000) {
+      _drive.arcadeDrive(0.5, 0);
+    } else {
+      _drive.arcadeDrive(0, 0);
     }
-    else { 
-      _drive.arcadeDrive( 0, 0);
-    }
-    if (elapsedTime > 1000 && elapsedTime < 3000) {
+    if (elapsedTime > 1000 && elapsedTime < 7000) {
       shooter.set(Relay.Value.kReverse);
     }
-    if (elapsedTime > 3000 && elapsedTime< 7000) {
+    if (elapsedTime > 3000 && elapsedTime < 8000) {
       fireOneBall();
+    }
+    if (elapsedTime> 8000){
+      shooter.set(Relay.Value.kOff);
     }
 
   }
-  public void fireOneBall() {
-    
 
-    
+  public void fireOneBall() {
+
+    long currentTime = System.currentTimeMillis();
+    long elapsedTime = currentTime - startTimeShootingPhase;
+
+    if (elapsedTime > 1000) {
+      isShooting = !isShooting;
+      startTimeShootingPhase = currentTime;
+
+    }
+
+    if (isShooting) {
+      inserter.set(-1);
+    } else {
+      inserter.set(0);
+    }
   }
+
   @Override
   public void autonomousInit() {
     super.autonomousInit();
 
     startTime = System.currentTimeMillis();
 
-
-
   }
-
-
-
 
 }

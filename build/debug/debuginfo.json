@@ -1,9 +1,16 @@
 [
   {
-    "artifact": "frcJava (in project a project name)",
+    "artifact": "frcJava (in project Robot2020Code)",
     "target": "roborio",
     "debugfile": "frcJava_roborio.debugconfig",
-    "project": "a project name",
+    "project": "Robot2020Code",
+    "language": "java"
+  },
+  {
+    "artifact": "frcJava (in project Tank Drive Example)",
+    "target": "roborio",
+    "debugfile": "frcJava_roborio.debugconfig",
+    "project": "Tank Drive Example",
     "language": "java"
   }
 ]
